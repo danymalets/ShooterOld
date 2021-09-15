@@ -15,11 +15,7 @@ public class Pistol : MonoBehaviour
     [SerializeField] private float _maxDistance = 100f;
 
     private float _waitTime;
-    private void Awake()
-    {
-        
-    }
-
+    
     private void Update()
     {
         if (_input.Shoot && _waitTime < 0f)

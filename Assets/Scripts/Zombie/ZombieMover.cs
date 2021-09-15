@@ -12,6 +12,8 @@ public class ZombieMover : MonoBehaviour
     [SerializeField] private float _attackAngle = 10f;
     [SerializeField] private float _angularSpeed = 120;
     
+    [SerializeField] private int _damage = 30;
+    
     private NavMeshAgent _navMeshAgent;
     private Animator _animator;
 
@@ -62,15 +64,15 @@ public class ZombieMover : MonoBehaviour
         }
     }
 
-    public void Punch()
-    {
-        Debug.Log("Punch");
-    }
-
     public void StopFollowing()
     {
         StopCoroutine(_following);
         _navMeshAgent.ResetPath();
+    }
+    
+    public void OnPunch()
+    {
+        _target.TakeDamage(_damage);
     }
 
     private void OnDrawGizmosSelected()

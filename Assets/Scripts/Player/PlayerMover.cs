@@ -25,9 +25,6 @@ public class PlayerMover : MonoBehaviour
     [Header("Sensitivity")]
     [SerializeField] private float _sensitivityX = 1f;
     [SerializeField] private float _sensitivityY = 1f;
-    
-    [SerializeField] private float _maxSensitivityX = 10f;
-    [SerializeField] private float _maxSensitivityY = 10f;
 
     private CharacterController _characterController;
     private Animator _animator;

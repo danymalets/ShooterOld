@@ -5,31 +5,42 @@ using UnityEngine.Serialization;
 
 public class ZombieSpawner : MonoBehaviour, IZombieDestroyProvider
 {
+    [SerializeField] private Notifications _notifications;
+    
     [SerializeField] private ZombiePool _zombiePool;
     [SerializeField] private Player _player;
     
     [SerializeField] private Transform[] _spawnPoints;
     [SerializeField] private float _minDistanceToPlayer = 10;
 
-    private int _level = 1;
-    private int _zombies;
-    private void Start()
+    private int _wave;
+    private int _deadZombies;
+    private List<Zombie> _liveZombies = new List<Zombie>();
+    
+    public void StartSpawn()
     {
-        SpawnZombie();
+        _wave = 1;
+        SpawnZombies();
     }
     
     public void Destroy(Zombie zombie)
     {
         _zombiePool.Put(zombie);
-        _zombies--;
+        _deadZombies--;
 
-        if (_zombies == 0)
+        if (_deadZombies == 0)
         {
-            _level++;
-            for (int i = 0; i < _level; i++)
-            {
-                SpawnZombie();
-            }
+            _wave++;
+            SpawnZombies();
+        }
+    }
+
+    private void SpawnZombies()
+    {
+        _notifications.NotifyAboutWave(_wave);
+        for (int i = 0; i < (1 <<_wave); i++)
+        {
+            SpawnZombie();
         }
     }
 
@@ -45,7 +56,20 @@ public class ZombieSpawner : MonoBehaviour, IZombieDestroyProvider
         Zombie zombie = _zombiePool.Get();
         zombie.transform.position = zombiePosition;
         zombie.Initialize(_player, this);
-
-        _zombies++;
+        _liveZombies.Add(zombie);
+        _deadZombies++;
     }
+
+    public void DestroyAllZombies()
+    {
+        foreach (Zombie zombie in _liveZombies)
+        {
+            _zombiePool.Put(zombie);
+        }
+    }
+}
+
+public interface IZombieDestroyProvider
+{
+    public void Destroy(Zombie zombie);
 }

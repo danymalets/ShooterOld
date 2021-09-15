@@ -27,7 +27,6 @@ public class Zombie : MonoBehaviour, IDamageable
     {
         _ragdoll = GetComponent<Ragdoll>();
         _mover = GetComponent<ZombieMover>();
-        _healthBar.Initialize(_startHealth);
     }
     
     public void Initialize(Player target, IZombieDestroyProvider zombieDestroyProvider)
@@ -36,6 +35,7 @@ public class Zombie : MonoBehaviour, IDamageable
         _mover.SetTarget(target);
         _health = _startHealth;
         _ragdoll.MakeAnimated();
+        _healthBar.Initialize(_startHealth);
         StartCoroutine(Appear());
     }
 

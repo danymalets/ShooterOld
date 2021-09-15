@@ -14,6 +14,9 @@ public class HealthBar : MonoBehaviour
     {
         gameObject.SetActive(true);
         _maxHealth = maxHealth;
+        
+        _text.text = _maxHealth.ToString();
+        _bar.fillAmount = 1;
         _bar.color = _gradient.Evaluate(1);
     }
 
